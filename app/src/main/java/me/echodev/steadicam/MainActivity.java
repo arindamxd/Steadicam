@@ -6,11 +6,11 @@ import android.util.Log;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 //import com.amazonaws.mobile.config.AWSConfiguration;
-//import com.amazonaws.mobileconnectors.s3.transferutility.*;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.*;
+//import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+//import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+//import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+//import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 import java.io.File;
@@ -27,26 +27,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadData() {
 
+        String s3FilePath = "s3Folder/s3Key.txt";
+        String localFilePath = "/path/to/file/localFile.txt";
+
         // Initialize AWSMobileClient if not initialized upon the app startup.
         // AWSMobileClient.getInstance().initialize(this).execute();
 
-        TransferUtility transferUtility =
-                TransferUtility.builder()
-                        .context(getApplicationContext())
-                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()))
-                        .build();
+        TransferUtility transferUtility = TransferUtility.builder()
+                .context(getApplicationContext())
+                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                .s3Client(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()))
+                .build();
 
-        TransferObserver uploadObserver =
-                transferUtility.upload(
-                        "s3Folder/s3Key.txt",
-                        new File("/path/to/file/localFile.txt"));
+        TransferObserver uploadObserver = transferUtility.upload(s3FilePath, new File(localFilePath));
 
         uploadObserver.setTransferListener(new TransferListener() {
 
             @Override
             public void onStateChanged(int id, TransferState state) {
-                if (TransferState.COMPLETED == state) {
+                if (state == TransferState.COMPLETED) {
                     // Handle a completed upload.
                 }
             }
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // If your upload does not trigger the onStateChanged method inside your
         // TransferListener, you can directly check the transfer state as shown here.
-        if (TransferState.COMPLETED == uploadObserver.getState()) {
+        if (uploadObserver.getState() == TransferState.COMPLETED) {
             // Handle a completed upload.
         }
     }

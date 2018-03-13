@@ -12,6 +12,17 @@
   "IdentityManager": {
     "Default": {}
   },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "steadicam-userfiles-mobilehub-656389126",
+      "Region": "ap-southeast-1"
+    }
+  },
+  "Cognito": {
+    "Default": {
+      "Region": "ap-southeast-1"
+    }
+  },
   "PinpointAnalytics": {
     "Default": {
       "AppId": "a178e482fda3467dbd36c5ee39c5241b",
@@ -21,6 +32,12 @@
   "PinpointTargeting": {
     "Default": {
       "Region": "us-east-1"
+    }
+  },
+  "UserFileManager": {
+    "Default": {
+      "Bucket": "steadicam-userfiles-mobilehub-656389126",
+      "Region": "ap-southeast-1"
     }
   }
 }
